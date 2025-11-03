@@ -14,7 +14,7 @@
         body {
             font-family: 'Georgia', serif;
             overflow: hidden;
-            background: #0a0e0f;
+            background: #000;
         }
 
         .container {
@@ -23,309 +23,586 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(to bottom, #1a2a1e, #0f1a14);
+            background: 
+                radial-gradient(ellipse at center top, rgba(30, 50, 30, 0.4), transparent 60%),
+                linear-gradient(to bottom, #0a1a0f 0%, #050f08 50%, #020805 100%);
             position: relative;
             overflow: hidden;
         }
 
-        /* Effet de brouillard */
+        /* Forêt en arrière-plan */
+        .forest-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(10, 30, 15, 0.8) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 50%, rgba(10, 30, 15, 0.8) 0%, transparent 40%);
+            opacity: 0.6;
+        }
+
+        /* Brouillard animé */
         .fog {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at center, transparent 0%, rgba(10, 20, 15, 0.5) 100%);
-            animation: fogMove 20s ease-in-out infinite;
+            background: 
+                radial-gradient(ellipse at 50% 80%, rgba(20, 40, 25, 0.3) 0%, transparent 50%);
+            animation: fogMove 15s ease-in-out infinite;
             pointer-events: none;
         }
 
         @keyframes fogMove {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
+            0%, 100% { opacity: 0.4; transform: translateX(0); }
+            50% { opacity: 0.7; transform: translateX(20px); }
         }
 
-        /* Structure de la porte */
-        .door-frame {
+        /* Sol en pierre */
+        .stone-floor {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            background: 
+                linear-gradient(to top, rgba(40, 45, 35, 0.9), transparent),
+                repeating-linear-gradient(90deg, 
+                    rgba(50, 55, 45, 0.3) 0px, 
+                    rgba(50, 55, 45, 0.3) 100px,
+                    rgba(40, 45, 35, 0.3) 100px,
+                    rgba(40, 45, 35, 0.3) 200px);
+            box-shadow: inset 0 30px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Structure principale de la porte */
+        .door-structure {
             position: relative;
-            width: 500px;
-            height: 650px;
-            perspective: 1000px;
+            width: 700px;
+            height: 800px;
+            z-index: 10;
         }
 
-        /* Pierre décorative autour */
-        .stone-arch {
+        /* Arche en pierre sculptée */
+        .stone-archway {
+            position: absolute;
+            width: 600px;
+            height: 750px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: 
+                linear-gradient(135deg, 
+                    #6b7d5f 0%, 
+                    #556b48 25%, 
+                    #445738 50%, 
+                    #556b48 75%, 
+                    #6b7d5f 100%);
+            border-radius: 300px 300px 0 0;
+            box-shadow: 
+                inset 0 0 80px rgba(0, 0, 0, 0.7),
+                inset -20px 0 40px rgba(0, 0, 0, 0.5),
+                inset 20px 0 40px rgba(0, 0, 0, 0.5),
+                0 30px 100px rgba(0, 0, 0, 0.9);
+            border: 15px solid #4a5a3d;
+        }
+
+        /* Texture de pierre sur l'arche */
+        .stone-archway::before {
+            content: '';
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #5a6b4f, #3d4a36);
-            border-radius: 50% 50% 0 0 / 20% 20% 0 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(90, 100, 80, 0.4) 0%, transparent 3%),
+                radial-gradient(circle at 80% 40%, rgba(70, 80, 60, 0.4) 0%, transparent 2%),
+                radial-gradient(circle at 40% 60%, rgba(80, 90, 70, 0.4) 0%, transparent 2.5%),
+                radial-gradient(circle at 60% 20%, rgba(75, 85, 65, 0.4) 0%, transparent 3%),
+                radial-gradient(circle at 30% 80%, rgba(85, 95, 75, 0.4) 0%, transparent 2%);
+            border-radius: 300px 300px 0 0;
+            opacity: 0.8;
+        }
+
+        /* Piliers latéraux */
+        .pillar {
+            position: absolute;
+            width: 100px;
+            height: 600px;
+            background: 
+                linear-gradient(to right, 
+                    #556b48, 
+                    #6b7d5f 20%, 
+                    #556b48 50%, 
+                    #445738 80%, 
+                    #556b48);
+            top: 150px;
             box-shadow: 
                 inset 0 0 40px rgba(0, 0, 0, 0.6),
-                0 20px 50px rgba(0, 0, 0, 0.8);
-            border: 8px solid #4a5a3f;
+                0 10px 50px rgba(0, 0, 0, 0.8);
         }
 
-        /* Ornements sur l'arche */
-        .ornament {
+        .pillar.left {
+            left: 0;
+            border-radius: 0 20px 20px 0;
+        }
+
+        .pillar.right {
+            right: 0;
+            border-radius: 20px 0 0 20px;
+        }
+
+        /* Ornement supérieur */
+        .top-ornament {
             position: absolute;
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(145deg, #8b7d4a, #6b5d3a);
-            border-radius: 50%;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+            background: 
+                radial-gradient(circle, #b8a570 0%, #8b7d4a 50%, #6b5d3a 100%);
+            border-radius: 20px;
             box-shadow: 
-                inset 2px 2px 5px rgba(0, 0, 0, 0.5),
-                0 0 20px rgba(139, 125, 74, 0.4);
+                inset 0 0 30px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(184, 165, 112, 0.4),
+                0 10px 30px rgba(0, 0, 0, 0.8);
+            border: 5px solid #5a4d2a;
         }
 
-        .ornament.top {
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-        }
-
-        .ornament.left {
-            top: 150px;
-            left: 10px;
-        }
-
-        .ornament.right {
-            top: 150px;
-            right: 10px;
-        }
-
-        /* Les deux battants de la porte */
-        .door-container {
+        .top-ornament::after {
+            content: '⚜';
             position: absolute;
-            top: 80px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            width: 360px;
-            height: 520px;
-            display: flex;
-            gap: 4px;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: #3a3020;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
         }
 
+        /* Ornements latéraux (torches/supports) */
+        .side-ornament {
+            position: absolute;
+            width: 70px;
+            height: 100px;
+            top: 200px;
+            background: 
+                linear-gradient(135deg, #8b7d4a, #6b5d3a);
+            border-radius: 15px;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.6),
+                0 5px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .side-ornament.left {
+            left: 15px;
+            transform: rotate(-5deg);
+        }
+
+        .side-ornament.right {
+            right: 15px;
+            transform: rotate(5deg);
+        }
+
+        .side-ornament::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #ff9944 0%, #cc6622 50%, transparent 70%);
+            border-radius: 50%;
+            box-shadow: 0 0 30px #ff9944, 0 0 50px rgba(255, 153, 68, 0.5);
+            animation: flicker 3s ease-in-out infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* Encadrement de la porte */
+        .door-frame-inner {
+            position: absolute;
+            width: 420px;
+            height: 600px;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2a2520;
+            border-radius: 200px 200px 0 0;
+            box-shadow: 
+                inset 0 0 50px rgba(0, 0, 0, 0.9),
+                0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Container des battants */
+        .door-wings-container {
+            position: absolute;
+            width: 400px;
+            height: 560px;
+            top: 135px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            perspective: 2000px;
+        }
+
+        /* Battants de la porte en bois */
         .door-wing {
             flex: 1;
-            background: linear-gradient(180deg, #3d2817, #2a1810);
-            border: 3px solid #2a1810;
-            border-radius: 8px;
+            background: 
+                linear-gradient(180deg, 
+                    #4a3428 0%, 
+                    #3d2817 20%, 
+                    #2a1810 50%, 
+                    #3d2817 80%, 
+                    #4a3428 100%);
+            border-radius: 196px 196px 0 0;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             box-shadow: 
-                inset 0 0 30px rgba(0, 0, 0, 0.7),
-                0 10px 40px rgba(0, 0, 0, 0.9);
+                inset 0 0 50px rgba(0, 0, 0, 0.8),
+                0 10px 50px rgba(0, 0, 0, 0.9);
+            border: 4px solid #2a1810;
+        }
+
+        /* Texture bois */
+        .door-wing::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(60, 40, 30, 0.3) 40px,
+                    rgba(60, 40, 30, 0.3) 43px),
+                repeating-linear-gradient(90deg,
+                    rgba(50, 35, 25, 0.2) 0px,
+                    rgba(50, 35, 25, 0.2) 2px,
+                    transparent 2px,
+                    transparent 80px);
+            border-radius: 196px 196px 0 0;
+            opacity: 0.6;
         }
 
         .door-wing.left {
             transform-origin: left center;
+            border-radius: 196px 0 0 0;
         }
 
         .door-wing.right {
             transform-origin: right center;
+            border-radius: 0 196px 0 0;
         }
 
-        .door-container.open .door-wing.left {
-            transform: rotateY(-120deg);
+        .door-wings-container.open .door-wing.left {
+            transform: rotateY(-125deg);
         }
 
-        .door-container.open .door-wing.right {
-            transform: rotateY(120deg);
+        .door-wings-container.open .door-wing.right {
+            transform: rotateY(125deg);
         }
 
-        /* Panneaux décoratifs sur la porte */
+        /* Panneaux sculptés sur la porte */
         .door-panel {
             position: absolute;
-            width: 80%;
-            height: 40%;
+            width: 75%;
+            height: 35%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: 
+                linear-gradient(145deg, #1a1008, #2a1810);
+            border: 4px solid #5a4530;
+            border-radius: 15px;
+            box-shadow: 
+                inset 0 0 25px rgba(0, 0, 0, 0.9),
+                0 4px 15px rgba(90, 69, 48, 0.3);
+        }
+
+        .door-panel.top {
+            top: 15%;
+        }
+
+        .door-panel.bottom {
+            bottom: 15%;
+        }
+
+        /* Motifs sur les panneaux */
+        .door-panel::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border: 3px solid #4a3828;
-            border-radius: 8px;
-            background: linear-gradient(145deg, #2a1810, #1a1008);
-            box-shadow: 
-                inset 0 0 20px rgba(0, 0, 0, 0.8),
-                0 2px 8px rgba(74, 56, 40, 0.3);
+            background: 
+                radial-gradient(circle, rgba(90, 69, 48, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
-        /* Poignées */
-        .handle {
+        /* Poignées en métal */
+        .door-handle {
             position: absolute;
-            width: 20px;
-            height: 80px;
-            background: linear-gradient(145deg, #8b7d4a, #6b5d3a);
-            border-radius: 10px;
+            width: 25px;
+            height: 100px;
+            background: 
+                linear-gradient(145deg, #b8a570, #8b7d4a, #6b5d3a);
             top: 50%;
+            transform: translateY(-50%);
+            border-radius: 12px;
             box-shadow: 
-                inset 2px 2px 5px rgba(0, 0, 0, 0.5),
-                0 0 15px rgba(139, 125, 74, 0.5);
+                inset 2px 2px 10px rgba(0, 0, 0, 0.6),
+                0 0 20px rgba(184, 165, 112, 0.5);
+            border: 2px solid #5a4d2a;
         }
 
-        .door-wing.left .handle {
-            right: 15px;
-            transform: translateY(-50%);
+        .door-wing.left .door-handle {
+            right: 20px;
         }
 
-        .door-wing.right .handle {
-            left: 15px;
-            transform: translateY(-50%);
-}
+        .door-wing.right .door-handle {
+            left: 20px;
+        }
 
-        /* Bouton d'entrée */
+        .door-handle::before {
+            content: '';
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: 
+                radial-gradient(circle, #b8a570, #8b7d4a);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 
+                inset 0 0 10px rgba(0, 0, 0, 0.6),
+                0 0 15px rgba(184, 165, 112, 0.4);
+            border: 3px solid #5a4d2a;
+        }
+
+        /* Rivets métalliques */
+        .rivet {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: 
+                radial-gradient(circle, #9a8a60, #7a6a50);
+            border-radius: 50%;
+            box-shadow: 
+                inset 1px 1px 3px rgba(0, 0, 0, 0.8),
+                0 0 5px rgba(154, 138, 96, 0.3);
+        }
+
+        .rivet:nth-child(1) { top: 10%; left: 15%; }
+        .rivet:nth-child(2) { top: 10%; right: 15%; }
+        .rivet:nth-child(3) { top: 30%; left: 15%; }
+        .rivet:nth-child(4) { top: 30%; right: 15%; }
+        .rivet:nth-child(5) { bottom: 30%; left: 15%; }
+        .rivet:nth-child(6) { bottom: 30%; right: 15%; }
+        .rivet:nth-child(7) { bottom: 10%; left: 15%; }
+        .rivet:nth-child(8) { bottom: 10%; right: 15%; }
+
+        /* Lianes réalistes */
+        .vine {
+            position: absolute;
+            width: 80px;
+            opacity: 0.7;
+            z-index: 15;
+        }
+
+        .vine-left {
+            height: 400px;
+            top: 0;
+            left: -30px;
+            background: 
+                repeating-linear-gradient(175deg,
+                    transparent 0px,
+                    transparent 15px,
+                    rgba(40, 60, 35, 0.6) 15px,
+                    rgba(40, 60, 35, 0.6) 20px,
+                    rgba(50, 70, 45, 0.5) 20px,
+                    rgba(50, 70, 45, 0.5) 30px);
+            border-radius: 50% 0 0 40%;
+            filter: blur(1px);
+        }
+
+        .vine-right {
+            height: 450px;
+            top: -50px;
+            right: -30px;
+            background: 
+                repeating-linear-gradient(5deg,
+                    transparent 0px,
+                    transparent 15px,
+                    rgba(40, 60, 35, 0.6) 15px,
+                    rgba(40, 60, 35, 0.6) 20px,
+                    rgba(50, 70, 45, 0.5) 20px,
+                    rgba(50, 70, 45, 0.5) 30px);
+            border-radius: 0 50% 40% 0;
+            filter: blur(1px);
+        }
+
+        /* Bouton d'entrée mystique */
         .enter-button {
             position: absolute;
-            bottom: -120px;
+            bottom: -150px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 18px 45px;
-            font-size: 20px;
+            padding: 20px 50px;
+            font-size: 24px;
             font-family: 'Georgia', serif;
+            font-weight: bold;
             color: #f4e4c1;
-            background: linear-gradient(145deg, #4a5a3f, #3d4a36);
-            border: 3px solid #6b7d5a;
-            border-radius: 12px;
+            background: 
+                linear-gradient(145deg, #4a5a3f, #3d4a36, #2d3a26);
+            border: 4px solid #6b7d5a;
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.4s ease;
             box-shadow: 
-                0 8px 25px rgba(0, 0, 0, 0.6),
-                inset 0 0 20px rgba(107, 125, 90, 0.2);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-            letter-spacing: 2px;
+                0 10px 40px rgba(0, 0, 0, 0.8),
+                inset 0 0 30px rgba(107, 125, 90, 0.2),
+                0 0 50px rgba(107, 125, 90, 0.1);
+            text-shadow: 
+                0 0 10px rgba(244, 228, 193, 0.5),
+                0 2px 5px rgba(0, 0, 0, 0.9);
+            letter-spacing: 4px;
+            text-transform: uppercase;
         }
 
         .enter-button:hover {
-            background: linear-gradient(145deg, #5a6b4f, #4a5a3f);
+            background: 
+                linear-gradient(145deg, #5a6b4f, #4a5a3f, #3d4a36);
             box-shadow: 
-                0 12px 35px rgba(0, 0, 0, 0.8),
-                inset 0 0 30px rgba(107, 125, 90, 0.4),
-                0 0 40px rgba(107, 125, 90, 0.3);
-            transform: translateX(-50%) translateY(-3px);
+                0 15px 50px rgba(0, 0, 0, 0.9),
+                inset 0 0 40px rgba(107, 125, 90, 0.4),
+                0 0 60px rgba(184, 165, 112, 0.4);
+            transform: translateX(-50%) translateY(-5px);
             color: #fff;
+            border-color: #8b9d7a;
         }
 
         .enter-button:active {
-            transform: translateX(-50%) translateY(0);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+            transform: translateX(-50%) translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
         }
 
-        /* Lumière mystique */
-        .glow {
+        /* Lumière divine qui apparaît */
+        .divine-light {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at center, rgba(139, 125, 74, 0.15) 0%, transparent 60%);
+            background: 
+                radial-gradient(ellipse at center, 
+                    rgba(255, 240, 180, 0.2) 0%, 
+                    rgba(184, 165, 112, 0.1) 30%,
+                    transparent 60%);
             pointer-events: none;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 1.5s ease;
+            z-index: 5;
         }
 
-        .door-container.open + .glow {
+        .door-wings-container.open ~ .divine-light {
             opacity: 1;
         }
 
-        /* Lianes décoratives */
-        .vine {
-            position: absolute;
-            width: 100px;
-            height: 200px;
-            opacity: 0.6;
-        }
-
-        .vine.left {
-            top: 0;
-            left: -20px;
-            background: linear-gradient(to bottom, 
-                transparent, 
-                rgba(60, 80, 50, 0.4) 30%, 
-                rgba(40, 60, 35, 0.6) 60%,
-                transparent);
-            border-radius: 50% 0 0 50%;
-        }
-
-        .vine.right {
-            top: 0;
-            right: -20px;
-            background: linear-gradient(to bottom, 
-                transparent, 
-                rgba(60, 80, 50, 0.4) 30%, 
-                rgba(40, 60, 35, 0.6) 60%,
-                transparent);
-            border-radius: 0 50% 50% 0;
-        }
-
-        /* Animation de particules */
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: #8b7d4a;
-            border-radius: 50%;
-            opacity: 0;
-            box-shadow: 0 0 10px #8b7d4a;
-        }
-
-        @keyframes float {
+        /* Particules magiques */
+        @keyframes particleFloat {
             0% {
-                transform: translateY(0) translateX(0);
+                transform: translate(0, 0) scale(0);
                 opacity: 0;
             }
-            50% {
+            20% {
                 opacity: 1;
             }
+            80% {
+                opacity: 0.8;
+            }
             100% {
-                transform: translateY(-200px) translateX(50px);
+                transform: translate(var(--tx), -300px) scale(1);
                 opacity: 0;
             }
         }
 
-        /* Message de bienvenue */
-        .welcome-text {
+        .particle {
             position: absolute;
-            top: -80px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 32px;
-            color: #8b7d4a;
-            text-shadow: 
-                0 0 20px rgba(139, 125, 74, 0.6),
-                0 2px 4px rgba(0, 0, 0, 0.8);
-            font-weight: bold;
-            letter-spacing: 3px;
-            opacity: 0.9;
+            width: 4px;
+            height: 4px;
+            background: #b8a570;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #b8a570;
+            animation: particleFloat 4s ease-out forwards;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="forest-bg"></div>
         <div class="fog"></div>
+        <div class="stone-floor"></div>
         
-        <div class="door-frame">
-            <div class="welcome-text">ENTREZ</div>
-            <div class="stone-arch"></div>
-            <div class="vine left"></div>
-            <div class="vine right"></div>
+        <div class="door-structure">
+            <!-- Lianes décoratives -->
+            <div class="vine vine-left"></div>
+            <div class="vine vine-right"></div>
             
-            <div class="ornament top"></div>
-            <div class="ornament left"></div>
-            <div class="ornament right"></div>
+            <!-- Piliers latéraux -->
+            <div class="pillar left"></div>
+            <div class="pillar right"></div>
             
-            <div class="door-container" id="doorContainer">
+            <!-- Arche en pierre -->
+            <div class="stone-archway">
+                <div class="top-ornament"></div>
+                <div class="side-ornament left"></div>
+                <div class="side-ornament right"></div>
+            </div>
+            
+            <!-- Cadre intérieur -->
+            <div class="door-frame-inner"></div>
+            
+            <!-- Battants de la porte -->
+            <div class="door-wings-container" id="doorContainer">
                 <div class="door-wing left">
-                    <div class="door-panel"></div>
-                    <div class="handle"></div>
+                    <div class="door-panel top"></div>
+                    <div class="door-panel bottom"></div>
+                    <div class="door-handle"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
                 </div>
                 <div class="door-wing right">
-                    <div class="door-panel"></div>
-                    <div class="handle"></div>
+                    <div class="door-panel top"></div>
+                    <div class="door-panel bottom"></div>
+                    <div class="door-handle"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
+                    <div class="rivet"></div>
                 </div>
             </div>
-            <div class="glow"></div>
             
+            <div class="divine-light"></div>
+            
+            <!-- Bouton d'entrée -->
             <button class="enter-button" id="enterBtn">
-                ENTRER
+                ⚔ ENTRER ⚔
             </button>
         </div>
     </div>
@@ -335,43 +612,95 @@
         const doorContainer = document.getElementById('doorContainer');
         const container = document.querySelector('.container');
 
-        // Créer des particules
-        function createParticles() {
-            for (let i = 0; i < 15; i++) {
+        // Créer des particules magiques
+        function createMagicParticles() {
+            const doorRect = doorContainer.getBoundingClientRect();
+            const centerX = doorRect.left + doorRect.width / 2;
+            const centerY = doorRect.top + doorRect.height / 2;
+
+            for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
                     const particle = document.createElement('div');
                     particle.className = 'particle';
-                    particle.style.left = `${250 + Math.random() * 100 - 50}px`;
-                    particle.style.top = '400px';
-                    particle.style.animation = `float ${2 + Math.random() * 2}s ease-out forwards`;
+                    
+                    const angle = (Math.random() * 120 - 60) * Math.PI / 180;
+                    const distance = 50 + Math.random() * 100;
+                    const tx = Math.cos(angle) * distance;
+                    
+                    particle.style.setProperty('--tx', `${tx}px`);
+                    particle.style.left = `${centerX - window.scrollX}px`;
+                    particle.style.top = `${centerY - window.scrollY + 200}px`;
                     particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                    
                     container.appendChild(particle);
                     
-                    setTimeout(() => particle.remove(), 4000);
-                }, i * 100);
+                    setTimeout(() => particle.remove(), 4500);
+                }, i * 80);
             }
         }
 
+        // Effet sonore (optionnel - simulation visuelle du son)
+        function playDoorSound() {
+            const soundWave = document.createElement('div');
+            soundWave.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100px;
+                height: 100px;
+                border: 3px solid rgba(184, 165, 112, 0.6);
+                border-radius: 50%;
+                pointer-events: none;
+                animation: soundPulse 1s ease-out;
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes soundPulse {
+                    0% { width: 100px; height: 100px; opacity: 1; }
+                    100% { width: 400px; height: 400px; opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            container.appendChild(soundWave);
+            setTimeout(() => soundWave.remove(), 1000);
+        }
+
+        // Ouverture de la porte
         enterBtn.addEventListener('click', () => {
             doorContainer.classList.add('open');
-            createParticles();
+            createMagicParticles();
+            playDoorSound();
+            
             enterBtn.style.opacity = '0';
             enterBtn.style.pointerEvents = 'none';
             
-            // Redirection après l'ouverture (ajustez l'URL selon vos besoins)
+            // Redirection après l'animation
             setTimeout(() => {
-                // window.location.href = 'votre-page-principale.html';
-                alert('Bienvenue ! Remplacez cette alerte par window.location.href = "votre-url.html"');
-            }, 2000);
+                // Remplacez 'accueil.html' par l'URL de votre page principale
+                // window.location.href = 'accueil.html';
+                alert('Bienvenue ! Remplacez cette alerte par :\nwindow.location.href = "accueil.html";');
+            }, 2500);
         });
 
-        // Effet de survol sur la porte
+        // Effet de survol
+        let hoverTimeout;
         doorContainer.addEventListener('mouseenter', () => {
-            doorContainer.style.filter = 'brightness(1.1)';
+            clearTimeout(hoverTimeout);
+            doorContainer.style.filter = 'brightness(1.15) contrast(1.1)';
         });
 
         doorContainer.addEventListener('mouseleave', () => {
+            hoverTimeout = setTimeout(() => {
+                doorContainer.style.filter = 'brightness(1) contrast(1)';
+            }, 200);
+        });
+
+        // Animation subtile au chargement
+        window.addEventListener('load', () => {
             doorContainer.style.filter = 'brightness(1)';
+            doorContainer.style.transition = 'filter 0.3s ease';
         });
     </script>
 </body>
